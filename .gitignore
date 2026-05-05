@@ -1,0 +1,5 @@
+.env
+.env.local
+*.bak
+*.bak.*
+.DS_Store
