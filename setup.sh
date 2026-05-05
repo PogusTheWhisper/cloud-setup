@@ -22,8 +22,6 @@ HF_TOKEN_V=$(asksec        "HF_TOKEN")
 TYPHOON_API_V=$(asksec     "TYPHOON_API")
 PGUSER_V=$(ask             "Postgres user" "postgres")
 PGDATABASE_V=$(ask         "Postgres database" "student")
-NT_UID_V=$(ask             "ntscraper UID")
-NT_PASSWORD_V=$(asksec     "ntscraper password")
 
 # ---------- 1. system packages ----------
 if [ "$OS" = "Linux" ]; then
@@ -193,8 +191,6 @@ export PGHOST='localhost'
 export PGPORT='5432'
 export PGUSER='${PGUSER_V}'
 export PGDATABASE='${PGDATABASE_V}'
-export NT_UID='${NT_UID_V}'
-export NT_PASSWORD='${NT_PASSWORD_V}'
 export PYTORCH_CUDA_ALLOC_CONF='expandable_segments:True'
 
 ZSHRC_HEAD
@@ -285,10 +281,6 @@ atg()      { antigravity "$1"; }
 gclone()   { git clone "$@"; }
 pgclaude() { command claude --dangerously-skip-permissions "$@"; }
 psqladd()  { psql -h "$PGHOST" -U "$PGUSER" -p "$PGPORT" -d "$PGDATABASE" -f "$1"; }
-ntscrape() {
-  local url="$1"; [ -z "$url" ] && { echo "Usage: ntscrape <url>"; return 1; }
-  uvr python -m ntscraper ./main.cpp --quiz_testcase_link "$url" --uid "$NT_UID" --password "$NT_PASSWORD"
-}
 init-claude() {
   local URL="https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md"
   if [ -f "CLAUDE.md" ]; then echo "" >> CLAUDE.md; curl -fsSL "$URL" >> CLAUDE.md
