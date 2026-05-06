@@ -55,25 +55,21 @@ fi
 # add via `claude plugin marketplace add <git-or-url>`
 # edit/extend this list freely
 MARKETS=(
-  "anthropics/skills"               # superpowers, hookify, pr-review-toolkit
-  "anthropics/claude-code"          # official examples
+  "obra/superpowers"      # superpowers (TDD, debugging, brainstorming…)
+  "anthropics/skills"     # document-skills (xlsx/docx/pptx/pdf)
 )
 for m in "${MARKETS[@]}"; do
-  if claude plugin marketplace list 2>/dev/null | grep -q "$m"; then
-    log "marketplace exists: $m"
-  else
-    log "adding marketplace: $m"
-    claude plugin marketplace add "$m" </dev/null || warn "failed: $m"
-  fi
+  log "adding marketplace: $m"
+  claude plugin marketplace add "$m" </dev/null 2>/dev/null || \
+    claude plugin marketplace update "${m##*/}" </dev/null 2>/dev/null || \
+    warn "marketplace add failed: $m"
 done
 
 # ---------- 5. plugins to auto-install ----------
-# format: <plugin-name>@<marketplace>
+# marketplace key = repo basename (after slash)
 PLUGINS=(
-  "superpowers@anthropics/skills"
-  "hookify@anthropics/skills"
-  "pr-review-toolkit@anthropics/skills"
-  "frontend-design@anthropics/skills"
+  "superpowers@superpowers"
+  "document-skills@skills"
 )
 for p in "${PLUGINS[@]}"; do
   log "installing plugin: $p"

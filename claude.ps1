@@ -43,7 +43,7 @@ if ($needAppend) {
 }
 
 # ---------- 4. marketplaces ----------
-$markets = @("anthropics/skills", "anthropics/claude-code")
+$markets = @("obra/superpowers", "anthropics/skills")
 foreach ($m in $markets) {
   Log "adding marketplace: $m"
   try { claude plugin marketplace add $m } catch { Warn "skip: $m" }
@@ -51,10 +51,8 @@ foreach ($m in $markets) {
 
 # ---------- 5. plugins ----------
 $plugins = @(
-  "superpowers@anthropics/skills",
-  "hookify@anthropics/skills",
-  "pr-review-toolkit@anthropics/skills",
-  "frontend-design@anthropics/skills"
+  "superpowers@superpowers",
+  "document-skills@skills"
 )
 foreach ($p in $plugins) {
   Log "installing plugin: $p"
