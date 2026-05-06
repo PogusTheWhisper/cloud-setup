@@ -1,32 +1,40 @@
 # cloud-setup
 
-One-shot bootstrap for fresh Ubuntu cloud boxes (and macOS). Installs zsh + oh-my-zsh + plugins, dev tools (git, docker, nvm/node, uv, gcloud, hf-cli, tmux), and writes `~/.zshrc` + `~/.tmux.conf` with credentials baked in via interactive prompts.
+Collection of single-file bootstrap scripts. Each is standalone and curl|bash-able.
+
+## Scripts
+
+| Script | Purpose |
+|--------|---------|
+| [`env.sh`](env.sh) | Cloud zsh env: zsh + oh-my-zsh + plugins, git, docker, nvm/node, uv, gcloud, gh, hf-cli, tmux + TPM, writes `~/.zshrc` + `~/.tmux.conf` (prompts for secrets). |
+| [`claude.sh`](claude.sh) | Claude Code CLI + plugins (superpowers, hookify, pr-review-toolkit, frontend-design) + global karpathy `CLAUDE.md`. Edit script to add caveman / MCP servers. |
 
 ## Usage
 
+Run any script directly:
+
 ```bash
-curl -fsSL https://raw.githubusercontent.com/PogusTheWhisper/cloud-setup/main/setup.sh | bash
-exec zsh
+curl -fsSL https://raw.githubusercontent.com/PogusTheWhisper/cloud-setup/main/env.sh | bash
+curl -fsSL https://raw.githubusercontent.com/PogusTheWhisper/cloud-setup/main/claude.sh | bash
 ```
 
 Or local:
 
 ```bash
-bash setup.sh
+bash env.sh
+bash claude.sh
 ```
 
-Prompts for credentials (Kaggle, HF, Typhoon, postgres, ntscraper) — leave blank to skip. Existing `~/.zshrc` / `~/.tmux.conf` are backed up to `.bak.<timestamp>`.
+All scripts idempotent — safe to re-run. macOS + Ubuntu auto-detect.
 
-## What it installs
+## Adding a script
 
-- **Shell**: zsh, oh-my-zsh, theme `robbyrussell`
-- **Plugins**: autosuggestions, syntax-highlighting, completions, history-substring-search, autopair, auto-notify, you-should-use, supercharge
-- **Tools**: git, docker (Linux), nvm + node LTS, uv, gcloud, huggingface-cli, tmux + TPM
-- **tmux**: prefix `Ctrl-a`, vim pane nav, mouse on, plugins (sensible/resurrect/continuum/yank/catppuccin)
+1. Drop `<name>.sh` in repo root
+2. Single-file, standalone, no shared lib
+3. `set -euo pipefail` + colored `log`/`warn`
+4. Add row to table above
 
 ## Notes
 
-- Idempotent — safe to re-run
-- macOS + Ubuntu auto-detect
-- Credentials baked into `~/.zshrc` (chmod 600). **Never commit `~/.zshrc`.**
-- Rotate any keys previously leaked.
+- `env.sh` bakes secrets into `~/.zshrc` (chmod 600). Never commit `~/.zshrc`.
+- Rotate any leaked keys.
