@@ -7,7 +7,8 @@ Collection of single-file bootstrap scripts. Each is standalone and curl|bash-ab
 | Script | Purpose |
 |--------|---------|
 | [`env.sh`](env.sh) | Cloud zsh env: zsh + oh-my-zsh + plugins, git, docker, nvm/node, uv, gcloud, gh, hf-cli, tmux + TPM, writes `~/.zshrc` + `~/.tmux.conf` (prompts for secrets). |
-| [`claude.sh`](claude.sh) | Claude Code CLI + plugins (superpowers, hookify, pr-review-toolkit, frontend-design) + global karpathy `CLAUDE.md`. Edit script to add caveman / MCP servers. |
+| [`claude.sh`](claude.sh) | Claude Code CLI + plugins + karpathy `CLAUDE.md` (Linux/macOS/Git Bash). |
+| [`claude.ps1`](claude.ps1) | Same as `claude.sh` for native Windows PowerShell (uses winget). |
 
 ## Usage
 
@@ -25,7 +26,13 @@ bash env.sh
 bash claude.sh
 ```
 
-All scripts idempotent — safe to re-run. macOS + Ubuntu auto-detect.
+Windows (PowerShell):
+
+```powershell
+irm https://raw.githubusercontent.com/PogusTheWhisper/cloud-setup/main/claude.ps1 | iex
+```
+
+All scripts idempotent — safe to re-run. macOS + Linux auto-detect. Native Windows: use `claude.ps1`; for `env.sh` use WSL2 (`wsl --install -d Ubuntu`).
 
 ## Adding a script
 

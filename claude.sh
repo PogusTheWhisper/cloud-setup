@@ -7,10 +7,19 @@ log()  { printf "\033[1;36m[claude]\033[0m %s\n" "$*"; }
 warn() { printf "\033[1;33m[warn]\033[0m %s\n" "$*"; }
 
 OS="$(uname -s)"
-SUDO=""; [ "$(id -u)" -ne 0 ] && SUDO="sudo"
+IS_WIN=0
+case "$OS" in MINGW*|MSYS*|CYGWIN*) IS_WIN=1 ;; esac
+SUDO=""; [ "$(id -u)" -ne 0 ] 2>/dev/null && SUDO="sudo"
+[ "$IS_WIN" = "1" ] && SUDO=""
 
 # ---------- 1. node (need npm) ----------
 if ! command -v npm >/dev/null 2>&1; then
+  if [ "$IS_WIN" = "1" ]; then
+    warn "npm missing. Install Node LTS first:"
+    warn "  winget install OpenJS.NodeJS.LTS"
+    warn "  then reopen shell and re-run."
+    exit 1
+  fi
   export NVM_DIR="$HOME/.nvm"
   if [ ! -d "$NVM_DIR" ]; then
     log "installing nvm + node LTS"

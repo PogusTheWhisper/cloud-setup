@@ -8,6 +8,14 @@ log()  { printf "\033[1;36m[setup]\033[0m %s\n" "$*"; }
 warn() { printf "\033[1;33m[warn]\033[0m %s\n" "$*"; }
 
 OS="$(uname -s)"
+case "$OS" in
+  MINGW*|MSYS*|CYGWIN*)
+    warn "native Windows not supported. Use WSL2:"
+    warn "  wsl --install -d Ubuntu"
+    warn "  then re-run inside WSL Ubuntu shell."
+    exit 1
+    ;;
+esac
 SUDO=""; [ "$(id -u)" -ne 0 ] && SUDO="sudo"
 
 # ---------- prompt for secrets (use /dev/tty so curl|bash works) ----------
