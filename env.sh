@@ -209,7 +209,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
 plugins=(
-  git docker docker-compose kubectl history sudo dotenv vim
+  git docker docker-compose kubectl history sudo dotenv vi-mode
   emoji encode64 web-search copyfile copypath copybuffer
   dirhistory jsontools
   zsh-autosuggestions zsh-syntax-highlighting zsh-completions
