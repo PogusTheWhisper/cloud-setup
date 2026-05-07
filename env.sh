@@ -39,7 +39,10 @@ if [ "$OS" = "Linux" ]; then
   $SUDO apt-get install -y \
     zsh git curl wget ca-certificates gnupg lsb-release \
     build-essential pkg-config python3 python3-pip python3-venv \
-    jq unzip tmux vim htop tree zip postgresql-client default-jre
+    jq unzip tmux vim htop tree zip postgresql-client default-jre locales
+  $SUDO sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen
+  $SUDO locale-gen en_US.UTF-8
+  $SUDO update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 elif [ "$OS" = "Darwin" ]; then
   if ! command -v brew >/dev/null 2>&1; then
     log "installing homebrew"
@@ -200,6 +203,8 @@ export PGPORT='5432'
 export PGUSER='${PGUSER_V}'
 export PGDATABASE='${PGDATABASE_V}'
 export PYTORCH_CUDA_ALLOC_CONF='expandable_segments:True'
+export LANG='en_US.UTF-8'
+export LC_ALL='en_US.UTF-8'
 
 ZSHRC_HEAD
 
