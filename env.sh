@@ -93,8 +93,14 @@ if command -v gh >/dev/null 2>&1 && ! gh auth status >/dev/null 2>&1; then
   gh auth login </dev/tty || warn "gh auth skipped"
 fi
 
-# ---------- 6. huggingface-cli ----------
-command -v huggingface-cli >/dev/null 2>&1 || pip3 install --user --quiet "huggingface_hub[cli,hf_transfer]" || true
+# ---------- 6. huggingface-cli (via uv tool — avoids PEP 668 on Debian 12+) ----------
+if ! command -v huggingface-cli >/dev/null 2>&1; then
+  if command -v uv >/dev/null 2>&1; then
+    uv tool install --quiet "huggingface_hub[cli,hf_transfer]" || true
+  else
+    pip3 install --user --quiet --break-system-packages "huggingface_hub[cli,hf_transfer]" || true
+  fi
+fi
 
 # ---------- 7. oh-my-zsh ----------
 export ZSH="$HOME/.oh-my-zsh"

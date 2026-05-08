@@ -54,22 +54,24 @@ fi
 # ---------- 4. plugin marketplaces ----------
 # add via `claude plugin marketplace add <git-or-url>`
 # edit/extend this list freely
+# format: "repo|marketplace-id" (id is from each repo's .claude-plugin/marketplace.json)
 MARKETS=(
-  "obra/superpowers"      # superpowers (TDD, debugging, brainstorming…)
-  "anthropics/skills"     # document-skills (xlsx/docx/pptx/pdf)
+  "obra/superpowers|superpowers-dev"
+  "anthropics/skills|anthropic-agent-skills"
 )
-for m in "${MARKETS[@]}"; do
-  log "adding marketplace: $m"
-  claude plugin marketplace add "$m" </dev/null 2>/dev/null || \
-    claude plugin marketplace update "${m##*/}" </dev/null 2>/dev/null || \
-    warn "marketplace add failed: $m"
+for entry in "${MARKETS[@]}"; do
+  repo="${entry%%|*}"; mid="${entry##*|}"
+  log "adding marketplace: $repo (id=$mid)"
+  claude plugin marketplace add "$repo" </dev/null 2>/dev/null || \
+    claude plugin marketplace update "$mid" </dev/null 2>/dev/null || \
+    warn "marketplace add failed: $repo"
 done
 
 # ---------- 5. plugins to auto-install ----------
-# marketplace key = repo basename (after slash)
+# format: "plugin@marketplace-id"
 PLUGINS=(
-  "superpowers@superpowers"
-  "document-skills@skills"
+  "superpowers@superpowers-dev"
+  "document-skills@anthropic-agent-skills"
 )
 for p in "${PLUGINS[@]}"; do
   log "installing plugin: $p"
