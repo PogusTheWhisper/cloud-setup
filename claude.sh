@@ -58,6 +58,10 @@ fi
 MARKETS=(
   "obra/superpowers|superpowers-dev"
   "anthropics/skills|anthropic-agent-skills"
+  "kerlos/pordee|pordee"
+  "forrestchang/andrej-karpathy-skills|karpathy-skills"
+  "affaan-m/everything-claude-code|ecc"
+  "JuliusBrussee/caveman|caveman"
 )
 for entry in "${MARKETS[@]}"; do
   repo="${entry%%|*}"; mid="${entry##*|}"
@@ -72,16 +76,15 @@ done
 PLUGINS=(
   "superpowers@superpowers-dev"
   "document-skills@anthropic-agent-skills"
+  "pordee@pordee"
+  "andrej-karpathy-skills@karpathy-skills"
+  "ecc@ecc"
+  "caveman@caveman"
 )
 for p in "${PLUGINS[@]}"; do
   log "installing plugin: $p"
   claude plugin install "$p" </dev/null || warn "failed: $p"
 done
-
-# ---------- 6. caveman (TODO: set source URL) ----------
-# CAVEMAN_MARKET=""   # e.g. "user/caveman-plugin"
-# [ -n "$CAVEMAN_MARKET" ] && claude plugin marketplace add "$CAVEMAN_MARKET" \
-#   && claude plugin install "caveman@$CAVEMAN_MARKET"
 
 # ---------- 7. MCP servers (optional) ----------
 # uncomment as needed

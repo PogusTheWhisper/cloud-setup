@@ -9,6 +9,7 @@ Collection of single-file bootstrap scripts. Each is standalone and curl|bash-ab
 | [`env.sh`](env.sh) | Cloud zsh env: zsh + oh-my-zsh + plugins, git, docker, nvm/node, uv, gcloud, gh, hf-cli, tmux + TPM, writes `~/.zshrc` + `~/.tmux.conf` (prompts for secrets). |
 | [`claude.sh`](claude.sh) | Claude Code CLI + plugins + karpathy `CLAUDE.md` (Linux/macOS/Git Bash). |
 | [`claude.ps1`](claude.ps1) | Same as `claude.sh` for native Windows PowerShell (uses winget). |
+| [`pgclaude.sh`](pgclaude.sh) | Install `pgclaude` shell function — launches `claude` pre-loaded with `/karpathy-guidelines /using-superpowers /pordee /caveman`. |
 
 ## Usage
 

@@ -43,7 +43,7 @@ if ($needAppend) {
 }
 
 # ---------- 4. marketplaces ----------
-$markets = @("obra/superpowers", "anthropics/skills")
+$markets = @("obra/superpowers", "anthropics/skills", "kerlos/pordee", "forrestchang/andrej-karpathy-skills", "affaan-m/everything-claude-code", "JuliusBrussee/caveman")
 foreach ($m in $markets) {
   Log "adding marketplace: $m"
   try { claude plugin marketplace add $m } catch { Warn "skip: $m" }
@@ -52,16 +52,18 @@ foreach ($m in $markets) {
 # ---------- 5. plugins ----------
 $plugins = @(
   "superpowers@superpowers",
-  "document-skills@skills"
+  "document-skills@skills",
+  "pordee@pordee",
+  "andrej-karpathy-skills@karpathy-skills",
+  "ecc@ecc",
+  "caveman@caveman"
 )
 foreach ($p in $plugins) {
   Log "installing plugin: $p"
   try { claude plugin install $p } catch { Warn "skip: $p" }
 }
 
-# ---------- 6. caveman + MCP (TODO: uncomment) ----------
-# claude plugin marketplace add "<caveman-repo>"
-# claude plugin install "caveman@<caveman-repo>"
+# ---------- 6. MCP (TODO: uncomment) ----------
 # claude mcp add context7 -- npx -y "@upstash/context7-mcp"
 # claude mcp add playwright -- npx -y "@playwright/mcp"
 
