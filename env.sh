@@ -152,6 +152,10 @@ set -g focus-events on
 set -g default-terminal "tmux-256color"
 set -ga terminal-overrides ",*256col*:Tc"
 
+# clipboard: OSC52 escape → host terminal (works over SSH, no xclip/pbcopy needed)
+set -s set-clipboard on
+set -ag terminal-overrides ',*:Ms=\E]52;c;%p2%s\7'
+
 # splits keep cwd
 bind | split-window -h -c "#{pane_current_path}"
 bind - split-window -v -c "#{pane_current_path}"
@@ -175,7 +179,19 @@ bind r source-file ~/.tmux.conf \; display "reloaded"
 # vi copy mode
 setw -g mode-keys vi
 bind -T copy-mode-vi v send -X begin-selection
-bind -T copy-mode-vi y send -X copy-selection-and-cancel
+bind -T copy-mode-vi y send -X copy-pipe-no-clear
+bind -T copy-mode-vi Enter send -X copy-pipe-no-clear
+
+# mouse drag: copy WITHOUT exiting copy-mode and WITHOUT jumping to bottom
+unbind -T copy-mode-vi MouseDragEnd1Pane
+bind -T copy-mode-vi MouseDragEnd1Pane send -X copy-pipe-no-clear
+# single click in copy-mode: clear selection but stay in copy-mode (no jump)
+bind -T copy-mode-vi MouseDown1Pane select-pane \; send -X clear-selection
+# scroll keeps you in copy-mode (don't auto-exit on bottom)
+bind -T copy-mode-vi WheelUpPane   send -N3 -X scroll-up
+bind -T copy-mode-vi WheelDownPane send -N3 -X scroll-down
+# q to leave copy-mode (back to live prompt)
+bind -T copy-mode-vi q send -X cancel
 
 # plugins (prefix + I to install)
 set -g @plugin 'tmux-plugins/tpm'
