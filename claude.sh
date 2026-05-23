@@ -62,6 +62,8 @@ MARKETS=(
   "forrestchang/andrej-karpathy-skills|karpathy-skills"
   "affaan-m/everything-claude-code|ecc"
   "JuliusBrussee/caveman|caveman"
+  "anthropics/claude-plugins|claude-plugins-official"
+  "Dammyjay93/interface-design|interface-design"
 )
 for entry in "${MARKETS[@]}"; do
   repo="${entry%%|*}"; mid="${entry##*|}"
@@ -80,17 +82,25 @@ PLUGINS=(
   "andrej-karpathy-skills@karpathy-skills"
   "ecc@ecc"
   "caveman@caveman"
+  # web-builder essentials (from claude-plugins-official)
+  "frontend-design@claude-plugins-official"
+  "code-simplifier@claude-plugins-official"
+  "security-guidance@claude-plugins-official"
+  "interface-design@interface-design"
 )
 for p in "${PLUGINS[@]}"; do
   log "installing plugin: $p"
   claude plugin install "$p" </dev/null || warn "failed: $p"
 done
 
-# ---------- 7. MCP servers (optional) ----------
+# ---------- 7. MCP servers ----------
 # uncomment as needed
 # claude mcp add context7 -- npx -y @upstash/context7-mcp
 # claude mcp add playwright -- npx -y @playwright/mcp
-# claude mcp add chrome-devtools -- npx -y chrome-devtools-mcp
+log "adding MCP: chrome-devtools"
+claude mcp add chrome-devtools -- npx -y chrome-devtools-mcp </dev/null || warn "mcp chrome-devtools failed"
+log "adding MCP: desktop-commander"
+claude mcp add desktop-commander -- npx -y @wonderwhy-er/desktop-commander </dev/null || warn "mcp desktop-commander failed"
 
 log "done. run: claude"
 log "list plugins:  claude plugin list"
