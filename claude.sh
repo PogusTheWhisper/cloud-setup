@@ -93,6 +93,21 @@ for p in "${PLUGINS[@]}"; do
   claude plugin install "$p" </dev/null || warn "failed: $p"
 done
 
+# ---------- 6. RTK (token-killer CLI proxy) ----------
+if ! command -v rtk >/dev/null 2>&1; then
+  if command -v brew >/dev/null 2>&1; then
+    log "installing rtk via homebrew"
+    brew install rtk
+  elif command -v cargo >/dev/null 2>&1; then
+    log "installing rtk via cargo"
+    cargo install rtk
+  else
+    warn "rtk: install homebrew or cargo first, then: brew install rtk"
+  fi
+else
+  log "rtk already installed: $(rtk --version 2>/dev/null || echo unknown)"
+fi
+
 # ---------- 7. MCP servers ----------
 # uncomment as needed
 # claude mcp add context7 -- npx -y @upstash/context7-mcp
